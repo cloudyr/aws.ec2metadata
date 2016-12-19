@@ -3,26 +3,29 @@ sudo: false
 cache: packages
 matrix:
   include:
-    - os: linux
-      dist: precise
-      sudo: false
-    - os: linux
-      dist: trusty
-    - os: osx
-      osx_image: xcode8
-    - os: osx
-      osx_image: beta-xcode6.2
+  - os: linux
+    dist: precise
+    sudo: false
+  - os: linux
+    dist: trusty
+  - os: osx
+    osx_image: xcode8
+  - os: osx
+    osx_image: beta-xcode6.2
 r_packages:
 - knitr
 - covr
 - drat
 after_failure:
-  email: 
+  email:
     recipients:
-     - thosjleeper@gmail.com
+    - thosjleeper@gmail.com
     on_success: change
     on_failure: change
 after_success:
 - Rscript -e 'library("covr");codecov()'
-#- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash knitreadme.sh
-- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash drat.sh
+- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
+  drat.sh
+env:
+  global:
+    secure: cfrr4e68qwEbYNYcvBY2kHJ54JQcU169H0nRBMEyONNGrs2wyvi0l1ehcoJimxxzGhoPOuaW6KdlP4kM1GG/lJGcQ79UXH4S6Ll/uh1jI76RngOIw57L9BnvdNcRZBlOH6mefnM8BuEtXLFobFsOxDB2GL11jErLsYjlyFysVu3kkVSi5VQRgAv9yN2eZIJufdHW+J1vUAmhAEvdNaqy9QaqxWHMAzQOUgxNg1RAlBdwsTjq1Ke3p52xGAfitt75fHNDb0NNu+nEdvOyncvgKfUYm4U9AgODH+zI0+5Y4CN/Ibz1VEvzSvIiFmQdGiLN2GZBheURTyyPx0kxv/D15PuBbdbHX88p1b3L4mDSaQ70ncL8QVdJjcjcTZiQAyh5Uiobb2jTvm/RrqPI7w+gD5kjbr6hb2fzvPfk3O8f6eOI9EYju2Em1yjCpjO2Zlz9ewDkMluTlTsSy81kMWP891HdrMHUfrMfeKHTIOW/kKtbsVf6M49sAlugiFYSKes+p375BT8X1DrFGJHoKNADhiKrBTOqKxoHsAjZolpq00lfim08KVtZ7YM+fAgbK3+OqFWbtEkUctbYXfHL5WMKFZjbbKz2ZRWa9LXBKWN6Ai+EURnR/uawXEt9Q3Z39+t1hqtwJSp5eQhJmFbjSXb+kMeOzz1qy181DNex8gMoMLk=

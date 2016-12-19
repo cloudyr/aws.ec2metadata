@@ -89,7 +89,10 @@ metadata <- list(
         get_instance_metadata(item = "meta-data/hostname", ...)
     },
     iam_info = function(...) {
-        get_instance_metadata(item = "meta-data/iam/info", parse = "json", ...)
+        info <- get_instance_metadata(item = "meta-data/iam/info", parse = "json", ...)
+    },
+    iam_role_names = function(...) {
+        get_instance_metadata(item = "meta-data/iam/security-credentials/", ...)
     },
     iam_role = function(role, ...) {
         get_instance_metadata(item = paste0("meta-data/iam/security-credentials/", role), parse = "json", ...)

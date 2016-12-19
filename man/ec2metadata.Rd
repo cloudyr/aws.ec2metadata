@@ -6,7 +6,7 @@
 \alias{aws.ec2metadata-package}
 \alias{metadata}
 \title{Get EC2 Instance Metadata}
-\format{An object of class \code{list} of length 24.}
+\format{An object of class \code{list} of length 25.}
 \usage{
 metadata
 }
