@@ -1,4 +1,4 @@
-# Package Template for the cloudyr project
+# Get EC2 Instance Metadata
 
 **aws.ec2metadata** is a package for retrieving Amazon EC2 instance metadata from within the running instance. The package simply contains a single R list, `metadata`, that contains a number of functions for retrieving metadata from within an instance. Most of these functions return character strings, but some will return lists; they default to `NULL` if no value is returned.
 
