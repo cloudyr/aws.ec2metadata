@@ -27,7 +27,7 @@ metadata$item("meta-data/placement/availability-zone")
 
 [![CRAN](https://www.r-pkg.org/badges/version/aws.ec2metadata)](https://cran.r-project.org/package=aws.ec2metadata)
 [![Travis Build Status](https://travis-ci.org/cloudyr/aws.ec2metadata.png?branch=master)](https://travis-ci.org/cloudyr/aws.ec2metadata)
-[![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/PROJECTNUMBER?svg=true)](https://ci.appveyor.com/project/cloudyr/aws.ec2metadata)
+[![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/65l0iyawalblkyby?svg=true)](https://ci.appveyor.com/project/cloudyr/aws.ec2metadata)
 [![codecov.io](https://codecov.io/github/cloudyr/aws.ec2metadata/coverage.svg?branch=master)](https://codecov.io/github/cloudyr/aws.ec2metadata?branch=master)
 
 This package is not yet on CRAN. To install the latest development version you can install from the cloudyr drat repository:
