@@ -13,14 +13,14 @@ function(item,
     } else {
         uri <- base_url
     }
-    response <- try(curl_fetch_memory(uri))
+    response <- try(curl_fetch_memory(uri), silent = TRUE)
     if (inherits(response, "try-error")) {
         stop("Request failed", call. = FALSE)
     } else if (response[["status_code"]] >= 400) {
         return(NULL)
     }
     if (parse == "json") {
-        fromJSON(rawToChar(response[["content"]]))
+        jsonlite::fromJSON(rawToChar(response[["content"]]))
     } else {
         parse_lines(rawToChar(response[["content"]]))
     }
@@ -37,7 +37,20 @@ function(item,
 NULL
 
 #' @rdname ec2metadata
-#' @details This is a list of functions to return various metadata values for the currently running EC2 instance. These are only meant to be called from an EC2 instance; no guarantees are made about behavior on other platforms. Two functions: \code{versions()} and \code{meta_data_items()} return the versions of the metadata, and the set of top-level metadata items, respectively.
+#' @export
+is_ec2 <- function() {
+    x <- try(get_instance_metadata(), silent = TRUE)
+    if (inherits(x, "try-error")) {
+        FALSE
+    } else {
+        TRUE
+    }
+}
+
+#' @rdname ec2metadata
+#' @details \code{is_ec2} returns a logical for whether the current R session appears to be running in an EC2 instance.
+#' 
+#' \code{metadata} is a list of functions to return various metadata values for the currently running EC2 instance. These are only meant to be called from an EC2 instance; no guarantees are made about behavior on other platforms. Two functions: \code{versions()} and \code{meta_data_items()} return the versions of the metadata, and the set of top-level metadata items, respectively.
 #' 
 #' The function \code{item()} retrieves a particular metadata item specified by its full path.
 #'

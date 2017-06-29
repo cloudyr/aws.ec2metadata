@@ -2,19 +2,24 @@
 % Please edit documentation in R/aws.ec2metadata-package.R
 \docType{package}
 \name{aws.ec2metadata-package}
-\alias{aws.ec2metadata}
 \alias{aws.ec2metadata-package}
+\alias{aws.ec2metadata}
+\alias{is_ec2}
 \alias{metadata}
 \title{Get EC2 Instance Metadata}
 \format{An object of class \code{list} of length 25.}
 \usage{
+is_ec2()
+
 metadata
 }
 \description{
 Retrieve EC2 instance metadata from the instance
 }
 \details{
-This is a list of functions to return various metadata values for the currently running EC2 instance. These are only meant to be called from an EC2 instance; no guarantees are made about behavior on other platforms. Two functions: \code{versions()} and \code{meta_data_items()} return the versions of the metadata, and the set of top-level metadata items, respectively.
+\code{is_ec2} returns a logical for whether the current R session appears to be running in an EC2 instance.
+
+\code{metadata} is a list of functions to return various metadata values for the currently running EC2 instance. These are only meant to be called from an EC2 instance; no guarantees are made about behavior on other platforms. Two functions: \code{versions()} and \code{meta_data_items()} return the versions of the metadata, and the set of top-level metadata items, respectively.
 
 The function \code{item()} retrieves a particular metadata item specified by its full path.
 
@@ -42,12 +47,11 @@ names(metadata)
   metadata$item("meta-data/placement/availability-zone")
 }
 }
-\author{
-Thomas J. Leeper <thosjleeper@gmail.com>
-}
 \references{
 \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html}{Metadata Documentation}
 }
+\author{
+Thomas J. Leeper <thosjleeper@gmail.com>
+}
 \keyword{datasets}
 \keyword{package}
-

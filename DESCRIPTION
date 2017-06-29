@@ -1,8 +1,8 @@
 Package: aws.ec2metadata
 Type: Package
 Title: Get EC2 Instance Metadata
-Version: 0.1.1
-Date: 2016-12-19
+Version: 0.1.2
+Date: 2017-06-29
 Authors@R: c(person("Thomas J.", "Leeper", role = c("aut", "cre"),
                     email = "thosjleeper@gmail.com"))
 Description: Retrieve Amazon EC2 instance metadata from within the running instance.
@@ -12,4 +12,4 @@ BugReports: https://github.com/cloudyr/aws.ec2metadata/issues
 Imports:
     curl,
     jsonlite
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
