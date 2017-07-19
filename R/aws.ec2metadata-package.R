@@ -48,18 +48,29 @@ is_ec2 <- function() {
 }
 
 #' @rdname ec2metadata
+#' @importFrom jsonlite fromJSON
+#' @export
+instance_document <- function() {
+    jsonlite::fromJSON(get_instance_metadata(item = "dynamic/instance-identity/document"))
+}
+
+#' @rdname ec2metadata
 #' @details \code{is_ec2} returns a logical for whether the current R session appears to be running in an EC2 instance.
+#' 
+#' \code{instance_document} returns a list containing values from the \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html}{Instance Identity Document}, including the instance ID, AMI ID, region, availability zone, etc.
 #' 
 #' \code{metadata} is a list of functions to return various metadata values for the currently running EC2 instance. These are only meant to be called from an EC2 instance; no guarantees are made about behavior on other platforms. Two functions: \code{versions()} and \code{meta_data_items()} return the versions of the metadata, and the set of top-level metadata items, respectively.
 #' 
 #' The function \code{item()} retrieves a particular metadata item specified by its full path.
 #'
-#' The remaining functions in the list are aliases for potentially commonly needed metadata items
-#' @details Generally, this will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} function returns a list. An error will occur if, for some reason, the request otherwise fails.
+#' The remaining functions in the list are aliases for potentially commonly needed metadata items.
+#' 
+#' @return \code{is_ec2} returns a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} function returns a list. An error will occur if, for some reason, the request otherwise fails.
 #' @examples
 #' names(metadata)
 #' 
 #' \dontrun{
+#' if (is_ec2()) {
 #'   metadata$versions()
 #'   metadata$items()
 #' 
@@ -74,6 +85,10 @@ is_ec2 <- function() {
 #' 
 #'   # get an arbitrary metadata item
 #'   metadata$item("meta-data/placement/availability-zone")
+#'   
+#'   # get region from instance identity document
+#'   instance_document()$region
+#' }
 #' }
 #' @references \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html}{Metadata Documentation}
 #' @importFrom jsonlite fromJSON
@@ -129,7 +144,7 @@ metadata <- list(
         get_instance_metadata(item = "meta-data/local-ipv4", ...)
     },
     availability_zone = function(...) {
-        get_instance_metadata(item = "placement/availability-zone", ...)
+        get_instance_metadata(item = "meta-data/placement/availability-zone", ...)
     },
     public_hostname = function(...) {
         get_instance_metadata(item = "meta-data/public-hostname", ...)

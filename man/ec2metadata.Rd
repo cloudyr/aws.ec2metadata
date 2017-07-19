@@ -5,13 +5,19 @@
 \alias{aws.ec2metadata-package}
 \alias{aws.ec2metadata}
 \alias{is_ec2}
+\alias{instance_document}
 \alias{metadata}
 \title{Get EC2 Instance Metadata}
 \format{An object of class \code{list} of length 25.}
 \usage{
 is_ec2()
 
+instance_document()
+
 metadata
+}
+\value{
+\code{is_ec2} returns a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} function returns a list. An error will occur if, for some reason, the request otherwise fails.
 }
 \description{
 Retrieve EC2 instance metadata from the instance
@@ -19,18 +25,19 @@ Retrieve EC2 instance metadata from the instance
 \details{
 \code{is_ec2} returns a logical for whether the current R session appears to be running in an EC2 instance.
 
+\code{instance_document} returns a list containing values from the \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html}{Instance Identity Document}, including the instance ID, AMI ID, region, availability zone, etc.
+
 \code{metadata} is a list of functions to return various metadata values for the currently running EC2 instance. These are only meant to be called from an EC2 instance; no guarantees are made about behavior on other platforms. Two functions: \code{versions()} and \code{meta_data_items()} return the versions of the metadata, and the set of top-level metadata items, respectively.
 
 The function \code{item()} retrieves a particular metadata item specified by its full path.
 
-The remaining functions in the list are aliases for potentially commonly needed metadata items
-
-Generally, this will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} function returns a list. An error will occur if, for some reason, the request otherwise fails.
+The remaining functions in the list are aliases for potentially commonly needed metadata items.
 }
 \examples{
 names(metadata)
 
 \dontrun{
+if (is_ec2()) {
   metadata$versions()
   metadata$items()
 
@@ -45,6 +52,10 @@ names(metadata)
 
   # get an arbitrary metadata item
   metadata$item("meta-data/placement/availability-zone")
+  
+  # get region from instance identity document
+  instance_document()$region
+}
 }
 }
 \references{
