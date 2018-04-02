@@ -41,10 +41,10 @@ install.packages("aws.ec2metadata", repos = c(cloudyr = "http://cloudyr.github.i
 Or, to pull a potentially unstable version directly from GitHub:
 
 ```R
-if (!require("ghit")) {
-    install.packages("ghit")
+if (!require("remotes")) {
+    install.packages("remotes")
 }
-ghit::install_github("cloudyr/aws.ec2metadata")
+remotes::install_github("cloudyr/aws.ec2metadata")
 ```
 
 ---
