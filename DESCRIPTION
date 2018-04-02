@@ -2,7 +2,7 @@ Package: aws.ec2metadata
 Type: Package
 Title: Get EC2 Instance Metadata
 Version: 0.1.3
-Date: 2017-07-19
+Date: 2018-04-02
 Authors@R: c(person("Thomas J.", "Leeper", role = c("aut", "cre"),
                     email = "thosjleeper@gmail.com"))
 Description: Retrieve Amazon EC2 instance metadata from within the running instance.
