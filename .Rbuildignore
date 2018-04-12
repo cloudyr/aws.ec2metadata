@@ -7,4 +7,4 @@
 /man-roxygen
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.github/
+^\.github.?
