@@ -7,6 +7,8 @@
 \alias{is_ec2}
 \alias{instance_document}
 \alias{metadata}
+\alias{is_ecs}
+\alias{ecs_metadata}
 \title{Get EC2 Instance Metadata}
 \format{An object of class \code{list} of length 25.}
 \usage{
@@ -15,6 +17,10 @@ is_ec2()
 instance_document()
 
 metadata
+
+is_ecs()
+
+ecs_metadata()
 }
 \value{
 \code{is_ec2} returns a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} function returns a list. An error will occur if, for some reason, the request otherwise fails.
@@ -55,6 +61,12 @@ if (is_ec2()) {
   
   # get region from instance identity document
   instance_document()$region
+}
+
+# Can also get ECS container metadata
+if (is_ecs()) {
+  # Get ECS role credentials
+  ecs_metadata()
 }
 }
 }
