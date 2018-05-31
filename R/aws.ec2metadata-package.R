@@ -89,6 +89,12 @@ instance_document <- function() {
 #'   # get region from instance identity document
 #'   instance_document()$region
 #' }
+#'
+#' # Can also get ECS container metadata
+#' if (is_ecs()) {
+#'   # Get ECS role credentials
+#'   ecs_metadata()
+#' }
 #' }
 #' @references \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html}{Metadata Documentation}
 #' @importFrom jsonlite fromJSON
@@ -171,3 +177,26 @@ metadata <- list(
         get_instance_metadata(item = "meta-data/services/partition", ...)
     }
 )
+
+ENV_CONTAINER_CREDS <- "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"
+
+#' @rdname ec2metadata
+#' @export
+is_ecs <- function() {
+    container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
+    return(!is.null(container_relative))
+}
+
+#' @rdname ec2metadata
+#' @export
+ecs_metadata <- function() {
+    container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
+    uri <- paste0("http://169.254.170.2", container_relative)
+    response <- try(curl::curl_fetch_memory(uri), silent = TRUE)
+    if (inherits(response, "try-error")) {
+        out <- NULL
+    } else {
+        out <- jsonlite::fromJSON(rawToChar(response[["content"]]))
+    }
+    out
+}

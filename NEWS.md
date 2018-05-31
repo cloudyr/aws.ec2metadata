@@ -1,3 +1,7 @@
+# aws.ec2metadata 0.1.5
+
+* Now supports querying ECS task role
+
 # aws.ec2metadata 0.1.4
 
 * Previous `.onLoad()` functionality added in 0.1.3 is now moved to `.onAttach()` to comply with CRAN policy.
