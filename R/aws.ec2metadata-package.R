@@ -184,7 +184,7 @@ ENV_CONTAINER_CREDS <- "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"
 #' @export
 is_ecs <- function() {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
-    return(!is.null(container_relative))
+    return(!is.null(container_relative)&&(container_relative != ""))
 }
 
 #' @rdname ec2metadata
