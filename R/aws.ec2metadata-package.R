@@ -189,9 +189,9 @@ is_ecs <- function() {
 
 #' @rdname ec2metadata
 #' @export
-ecs_metadata <- function() {
+ecs_metadata <- function(base_url="http://169.254.170.2") {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
-    uri <- paste0("http://169.254.170.2", container_relative)
+    uri <- paste0(base_url, container_relative)
     response <- try(curl::curl_fetch_memory(uri), silent = TRUE)
     if (inherits(response, "try-error")) {
         out <- NULL
