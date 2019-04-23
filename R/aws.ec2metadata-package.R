@@ -93,6 +93,8 @@ instance_document <- function() {
 #' # Can also get ECS container metadata
 #' if (is_ecs()) {
 #'   # Get ECS role credentials
+#'   metadata$ecs_task_role()
+#'   # or
 #'   ecs_metadata()
 #' }
 #' }
@@ -175,7 +177,11 @@ metadata <- list(
     },
     partition = function(...) {
         get_instance_metadata(item = "meta-data/services/partition", ...)
+    },
+    ecs_task_role = function(...) {
+        ecs_metadata(...)
     }
+
 )
 
 ENV_CONTAINER_CREDS <- "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"

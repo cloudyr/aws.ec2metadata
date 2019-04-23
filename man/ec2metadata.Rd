@@ -10,7 +10,7 @@
 \alias{is_ecs}
 \alias{ecs_metadata}
 \title{Get EC2 Instance Metadata}
-\format{An object of class \code{list} of length 25.}
+\format{An object of class \code{list} of length 26.}
 \usage{
 is_ec2()
 
@@ -69,6 +69,8 @@ if (is_ec2()) {
 # Can also get ECS container metadata
 if (is_ecs()) {
   # Get ECS role credentials
+  metadata$ecs_task_role()
+  # or
   ecs_metadata()
 }
 }
