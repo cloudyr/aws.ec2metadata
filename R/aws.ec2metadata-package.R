@@ -55,7 +55,7 @@ instance_document <- function() {
 }
 
 #' @rdname ec2metadata
-#' @details \code{is_ec2} returns a logical for whether the current R session appears to be running in an EC2 instance.
+#' @details \code{is_ec2()} returns a logical for whether the current R session appears to be running in an EC2 instance. \code{is_ecs()} returns a logical for whether the current R session appears to be running in an ECS task container.
 #' 
 #' \code{instance_document} returns a list containing values from the \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html}{Instance Identity Document}, including the instance ID, AMI ID, region, availability zone, etc.
 #' 
@@ -65,7 +65,7 @@ instance_document <- function() {
 #'
 #' The remaining functions in the list are aliases for potentially commonly needed metadata items.
 #' 
-#' @return \code{is_ec2} returns a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} function returns a list. An error will occur if, for some reason, the request otherwise fails.
+#' @return \code{is_ec2()} and \code{is_ecs()} return a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} and \code{ecs_metadata()} functions return a list. An error will occur if, for some reason, the request otherwise fails.
 #' @examples
 #' names(metadata)
 #' 
@@ -93,6 +93,8 @@ instance_document <- function() {
 #' # Can also get ECS container metadata
 #' if (is_ecs()) {
 #'   # Get ECS role credentials
+#'   metadata$ecs_task_role()
+#'   # or
 #'   ecs_metadata()
 #' }
 #' }
@@ -175,7 +177,11 @@ metadata <- list(
     },
     partition = function(...) {
         get_instance_metadata(item = "meta-data/services/partition", ...)
+    },
+    ecs_task_role = function(...) {
+        ecs_metadata(...)
     }
+
 )
 
 ENV_CONTAINER_CREDS <- "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"
@@ -184,14 +190,15 @@ ENV_CONTAINER_CREDS <- "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"
 #' @export
 is_ecs <- function() {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
-    return(!is.null(container_relative))
+    return(!is.null(container_relative)&&(container_relative != ""))
 }
 
 #' @rdname ec2metadata
+#' @param base_url Base URL for querying instance metadata
 #' @export
-ecs_metadata <- function() {
+ecs_metadata <- function(base_url="http://169.254.170.2") {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
-    uri <- paste0("http://169.254.170.2", container_relative)
+    uri <- paste0(base_url, container_relative)
     response <- try(curl::curl_fetch_memory(uri), silent = TRUE)
     if (inherits(response, "try-error")) {
         out <- NULL
