@@ -188,6 +188,7 @@ is_ecs <- function() {
 }
 
 #' @rdname ec2metadata
+#' @param base_url Base URL for querying instance metadata
 #' @export
 ecs_metadata <- function(base_url="http://169.254.170.2") {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)

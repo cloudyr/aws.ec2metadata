@@ -22,6 +22,9 @@ is_ecs()
 
 ecs_metadata(base_url = "http://169.254.170.2")
 }
+\arguments{
+\item{base_url}{Base URL for querying instance metadata}
+}
 \value{
 \code{is_ec2()} and \code{is_ecs()} return a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} and \code{ecs_metadata()} functions return a list. An error will occur if, for some reason, the request otherwise fails.
 }
