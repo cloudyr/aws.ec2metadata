@@ -55,7 +55,7 @@ instance_document <- function() {
 }
 
 #' @rdname ec2metadata
-#' @details \code{is_ec2} returns a logical for whether the current R session appears to be running in an EC2 instance.
+#' @details \code{is_ec2()} returns a logical for whether the current R session appears to be running in an EC2 instance. \code{is_ecs()} returns a logical for whether the current R session appears to be running in an ECS task container.
 #' 
 #' \code{instance_document} returns a list containing values from the \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html}{Instance Identity Document}, including the instance ID, AMI ID, region, availability zone, etc.
 #' 
@@ -65,7 +65,7 @@ instance_document <- function() {
 #'
 #' The remaining functions in the list are aliases for potentially commonly needed metadata items.
 #' 
-#' @return \code{is_ec2} returns a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} function returns a list. An error will occur if, for some reason, the request otherwise fails.
+#' @return \code{is_ec2()} and \code{is_ecs()} return a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} and \code{ecs_metadata()} functions return a list. An error will occur if, for some reason, the request otherwise fails.
 #' @examples
 #' names(metadata)
 #' 

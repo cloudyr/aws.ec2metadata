@@ -20,16 +20,16 @@ metadata
 
 is_ecs()
 
-ecs_metadata()
+ecs_metadata(base_url = "http://169.254.170.2")
 }
 \value{
-\code{is_ec2} returns a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} function returns a list. An error will occur if, for some reason, the request otherwise fails.
+\code{is_ec2()} and \code{is_ecs()} return a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} and \code{ecs_metadata()} functions return a list. An error will occur if, for some reason, the request otherwise fails.
 }
 \description{
 Retrieve EC2 instance metadata from the instance
 }
 \details{
-\code{is_ec2} returns a logical for whether the current R session appears to be running in an EC2 instance.
+\code{is_ec2()} returns a logical for whether the current R session appears to be running in an EC2 instance. \code{is_ecs()} returns a logical for whether the current R session appears to be running in an ECS task container.
 
 \code{instance_document} returns a list containing values from the \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html}{Instance Identity Document}, including the instance ID, AMI ID, region, availability zone, etc.
 

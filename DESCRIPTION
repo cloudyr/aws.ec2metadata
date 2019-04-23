@@ -16,4 +16,4 @@ BugReports: https://github.com/cloudyr/aws.ec2metadata/issues
 Imports:
     curl,
     jsonlite
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
