@@ -3,9 +3,12 @@ Type: Package
 Title: Get EC2 Instance Metadata
 Version: 0.1.5
 Date: 2018-07-26
-Authors@R: c(person("Thomas J.", "Leeper", role = c("aut", "cre"),
+Authors@R: c(person("Thomas J.", "Leeper", role = c("aut"),
                     email = "thosjleeper@gmail.com",
-                    comment = c(ORCID = "0000-0003-4097-6326")))
+                    comment = c(ORCID = "0000-0003-4097-6326")),
+             person("Jonathan", "Stott", role = c("cre"),
+             email =  "jonathan.stott@magairports.com")
+             )
 Description: Retrieve Amazon EC2 instance metadata from within the running instance.
 License: GPL (>= 2)
 URL: https://github.com/cloudyr/aws.ec2metadata
