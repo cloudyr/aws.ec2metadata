@@ -2,7 +2,7 @@ Package: aws.ec2metadata
 Type: Package
 Title: Get EC2 Instance Metadata
 Version: 0.1.6
-Date: 2018-07-26
+Date: 2019-04-23
 Authors@R: c(person("Thomas J.", "Leeper", role = c("aut"),
                     email = "thosjleeper@gmail.com",
                     comment = c(ORCID = "0000-0003-4097-6326")),
