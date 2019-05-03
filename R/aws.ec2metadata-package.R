@@ -2,12 +2,11 @@ parse_lines <- function(x) {
     strsplit(x, "\n")[[1]]
 }
 
-get_instance_metadata <- 
-function(item,
-         version = "latest",
-         base_url = "http://169.254.169.254/", 
-         parse = "text",
-         ...) {
+get_instance_metadata <- function(item,
+                                  version = "latest",
+                                  base_url = "http://169.254.169.254/", 
+                                  parse = "text",
+                                  ...) {
     if (!missing(item)) {
         uri <- paste0(base_url, version, "/", item)
     } else {
@@ -190,13 +189,13 @@ ENV_CONTAINER_CREDS <- "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"
 #' @export
 is_ecs <- function() {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
-    return(!is.null(container_relative)&&(container_relative != ""))
+    return(!is.null(container_relative) && (container_relative != ""))
 }
 
 #' @rdname ec2metadata
 #' @param base_url Base URL for querying instance metadata
 #' @export
-ecs_metadata <- function(base_url="http://169.254.170.2") {
+ecs_metadata <- function(base_url = "http://169.254.170.2") {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
     uri <- paste0(base_url, container_relative)
     response <- try(curl::curl_fetch_memory(uri, handle = curl::new_handle(timeout_ms = 100)), silent = TRUE)
