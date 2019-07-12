@@ -2,6 +2,34 @@ parse_lines <- function(x) {
     strsplit(x, "\n")[[1]]
 }
 
+get_timeout <- function(default_timeout="1") {
+    # check for timeout in env vars
+    timeout <- Sys.getenv("AWS_METADATA_SERVICE_TIMEOUT", default_timeout)
+    timeout <- as.integer(timeout)
+    if (is.na(timeout)) {
+        timeout <- 1
+    }
+    return(timeout*1000)
+}
+
+fetch <- function(uri) {
+    timeout <- get_timeout()
+    handle <- curl::new_handle(timeout_ms = timeout)
+    
+    response <- try(
+        curl::curl_fetch_memory(uri,
+                                handle = handle),
+        silent = TRUE
+    )
+    
+    if (inherits(response, "try-error")) {
+        return(NULL)
+    } else {
+        return(response)
+    }
+
+}
+
 get_instance_metadata <- function(item,
                                   version = "latest",
                                   base_url = "http://169.254.169.254/", 
@@ -12,8 +40,8 @@ get_instance_metadata <- function(item,
     } else {
         uri <- base_url
     }
-    response <- try(curl::curl_fetch_memory(uri, handle = curl::new_handle(timeout_ms = 1000)), silent = TRUE)
-    if (inherits(response, "try-error")) {
+    response <- fetch(uri)
+    if (is.null(response)) {
         stop("Request failed", call. = FALSE)
     } else if (response[["status_code"]] >= 400) {
         return(NULL)
@@ -198,8 +226,10 @@ is_ecs <- function() {
 ecs_metadata <- function(base_url = "http://169.254.170.2") {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
     uri <- paste0(base_url, container_relative)
-    response <- try(curl::curl_fetch_memory(uri, handle = curl::new_handle(timeout_ms = 1000)), silent = TRUE)
-    if (inherits(response, "try-error")) {
+    
+    response <- fetch(uri)
+    
+    if (is.null(response)) {
         out <- NULL
     } else {
         out <- jsonlite::fromJSON(rawToChar(response[["content"]]))
