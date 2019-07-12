@@ -12,7 +12,7 @@ get_instance_metadata <- function(item,
     } else {
         uri <- base_url
     }
-    response <- try(curl::curl_fetch_memory(uri, handle = curl::new_handle(timeout_ms = 100)), silent = TRUE)
+    response <- try(curl::curl_fetch_memory(uri, handle = curl::new_handle(timeout_ms = 1000)), silent = TRUE)
     if (inherits(response, "try-error")) {
         stop("Request failed", call. = FALSE)
     } else if (response[["status_code"]] >= 400) {
@@ -198,7 +198,7 @@ is_ecs <- function() {
 ecs_metadata <- function(base_url = "http://169.254.170.2") {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
     uri <- paste0(base_url, container_relative)
-    response <- try(curl::curl_fetch_memory(uri, handle = curl::new_handle(timeout_ms = 100)), silent = TRUE)
+    response <- try(curl::curl_fetch_memory(uri, handle = curl::new_handle(timeout_ms = 1000)), silent = TRUE)
     if (inherits(response, "try-error")) {
         out <- NULL
     } else {
