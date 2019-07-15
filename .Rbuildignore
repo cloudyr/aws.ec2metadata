@@ -9,3 +9,4 @@
 ^\.Rproj\.user$
 ^\.github.?
 revdep
+^cran-comments\.md$
