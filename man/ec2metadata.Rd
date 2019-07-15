@@ -42,7 +42,7 @@ The function \code{item()} retrieves a particular metadata item specified by its
 
 The remaining functions in the list are aliases for potentially commonly needed metadata items.
 
-The enviromental variable \code{AWS_METADATA_SERVICE_TIMEOUT} controls the timeout for instance metadata checks, and defaults to 1 second.
+The environment variable \code{AWS_METADATA_SERVICE_TIMEOUT} controls the timeout for instance metadata checks, and defaults to 1 second.
 }
 \examples{
 names(metadata)

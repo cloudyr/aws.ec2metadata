@@ -92,7 +92,7 @@ instance_document <- function() {
 #'
 #' The remaining functions in the list are aliases for potentially commonly needed metadata items.
 #' 
-#' The enviromental variable \code{AWS_METADATA_SERVICE_TIMEOUT} controls the timeout for instance metadata checks, and defaults to 1 second.
+#' The environment variable \code{AWS_METADATA_SERVICE_TIMEOUT} controls the timeout for instance metadata checks, and defaults to 1 second.
 #' 
 #' @return \code{is_ec2()} and \code{is_ecs()} return a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} and \code{ecs_metadata()} functions return a list. An error will occur if, for some reason, the request otherwise fails.
 #' @examples
