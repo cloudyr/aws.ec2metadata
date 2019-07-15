@@ -5,7 +5,7 @@
 
 # aws.ec2metadata 0.1.6
 
-* Added new functions: `is_ecs()` to check whether R is running in an Elastic Container Store (ECS) instance, and `ecs_metadata()` to retreive credentials from the container. (#2, h/t @jon-mago)
+* Added new functions: `is_ecs()` to check whether R is running in an Elastic Container Store (ECS) instance, and `ecs_metadata()` to retrieve credentials from the container. (#2, h/t @jon-mago)
 
 # aws.ec2metadata 0.1.5
 
