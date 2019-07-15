@@ -1,7 +1,7 @@
 # aws.ec2metadata 0.2.0
 
 * revise timeout for curl checks against instance metadata (Thanks @jmorten)
-* curl timeout now respects the AWS_METADATA_SERVICE_TIMEOUT from boto3
+* curl timeout now respects the AWS_METADATA_SERVICE_TIMEOUT environment variable (like boto3)
 
 # aws.ec2metadata 0.1.6
 
