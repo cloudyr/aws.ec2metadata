@@ -12,10 +12,10 @@ get_timeout <- function(default_timeout="1") {
     return(timeout*1000)
 }
 
-fetch <- function(uri) {
+fetch <- function(uri, token=NULL) {
     timeout <- get_timeout()
     handle <- curl::new_handle(timeout_ms = timeout)
-    
+    curl::handle_setheaders(handle, 'X-aws-ec2-metadata-token' = token)
     response <- try(
         curl::curl_fetch_memory(uri,
                                 handle = handle),
@@ -30,17 +30,37 @@ fetch <- function(uri) {
 
 }
 
+# for IMDSv2
+
+fetch_token <- function(base_url, version) {
+  timeout <- get_timeout()
+  handle <- curl::new_handle(timeout_ms=timeout)
+  curl::handle_setheaders(handle, "X-aws-ec2-metadata-token-ttl-seconds" = "21600")
+  curl::handle_setopt(handle, customrequest = 'PUT')
+  uri <- paste0(base_url, version, '/api/token');
+  response <- curl::curl_fetch_memory(uri, handle = handle)
+  rawToChar(response$content)
+}
+
 get_instance_metadata <- function(item,
                                   version = "latest",
                                   base_url = "http://169.254.169.254/", 
                                   parse = "text",
                                   ...) {
+  
+    use_token=Sys.getenv('USE_IMDS_TOKEN') == "TRUE"
     if (!missing(item)) {
         uri <- paste0(base_url, version, "/", item)
     } else {
         uri <- base_url
     }
-    response <- fetch(uri)
+    if(use_token) {
+      token <- fetch_token(base_url, version)
+      print(token)
+      response <- fetch(uri, token)
+    } else {
+      response <- fetch(uri)
+    }
     if (is.null(response)) {
         stop("Request failed", call. = FALSE)
     } else if (response[["status_code"]] >= 400) {
