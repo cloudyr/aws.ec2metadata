@@ -48,7 +48,7 @@ get_instance_metadata <- function(item,
                                   parse = "text",
                                   ...) {
   
-    use_token=Sys.getenv('USE_IMDS_TOKEN') == "TRUE"
+    use_token <- Sys.getenv('USE_IMDS_TOKEN') == "TRUE"
     if (!missing(item)) {
         uri <- paste0(base_url, version, "/", item)
     } else {
@@ -56,7 +56,6 @@ get_instance_metadata <- function(item,
     }
     if(use_token) {
       token <- fetch_token(base_url, version)
-      print(token)
       response <- fetch(uri, token)
     } else {
       response <- fetch(uri)

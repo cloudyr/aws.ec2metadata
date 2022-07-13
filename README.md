@@ -47,5 +47,14 @@ if (!require("remotes")) {
 remotes::install_github("cloudyr/aws.ec2metadata")
 ```
 
+## IMDSv2 support
+
+For IMDSv2, a token is required. Details in aws support [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html). 
+Set environment variable USE_IMDS_TOKEN to "TRUE" to use this feature.
+
+```R
+Sys.setenv(USE_IMDS_TOKEN="TRUE")
+```
+
 ---
 [![cloudyr project logo](https://i.imgur.com/JHS98Y7.png)](https://github.com/cloudyr)
