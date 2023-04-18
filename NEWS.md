@@ -1,3 +1,7 @@
+# aws.ec2metadata 0.2.1
+
+* add IMDSv2 support (#10)
+
 # aws.ec2metadata 0.2.0
 
 * revise timeout for curl checks against instance metadata (Thanks @jmorten)
