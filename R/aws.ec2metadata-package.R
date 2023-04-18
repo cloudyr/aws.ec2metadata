@@ -15,7 +15,9 @@ get_timeout <- function(default_timeout="1") {
 fetch <- function(uri, token=NULL) {
     timeout <- get_timeout()
     handle <- curl::new_handle(timeout_ms = timeout)
-    curl::handle_setheaders(handle, 'X-aws-ec2-metadata-token' = token)
+    if(!is.null(token)) {
+      curl::handle_setheaders(handle, 'X-aws-ec2-metadata-token' = token)
+    }
     response <- try(
         curl::curl_fetch_memory(uri,
                                 handle = handle),
