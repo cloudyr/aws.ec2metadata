@@ -10,7 +10,9 @@
 \alias{is_ecs}
 \alias{ecs_metadata}
 \title{Get EC2 Instance Metadata}
-\format{An object of class \code{list} of length 26.}
+\format{
+An object of class \code{list} of length 26.
+}
 \usage{
 is_ec2()
 
