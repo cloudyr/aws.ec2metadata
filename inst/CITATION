@@ -5,7 +5,10 @@ citHeader("To cite package 'aws.ec2metadata' in publications use:")
  
  citEntry(entry="Manual",
 		  title = "aws.ec2metadata: An R Package",
-		  author = personList(as.person("Thomas J. Leeper")),
+		  author = c(
+            person("Thomas J.", "Leeper"),
+            person("Gonzalo", "Diaz")
+      )
 		  year = year,
 		  note = vers,
 		  textVersion =
