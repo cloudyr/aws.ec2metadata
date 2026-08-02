@@ -2,65 +2,67 @@ parse_lines <- function(x) {
     strsplit(x, "\n")[[1]]
 }
 
-get_timeout <- function(default_timeout="1") {
+get_timeout <- function(default_timeout = "1") {
     # check for timeout in env vars
     timeout <- Sys.getenv("AWS_METADATA_SERVICE_TIMEOUT", default_timeout)
     timeout <- as.integer(timeout)
     if (is.na(timeout)) {
         timeout <- 1
     }
-    return(timeout*1000)
+    return(timeout * 1000)
 }
 
-fetch <- function(uri, token=NULL) {
+fetch <- function(uri, token = NULL) {
     timeout <- get_timeout()
     handle <- curl::new_handle(timeout_ms = timeout)
-    if(!is.null(token)) {
-      curl::handle_setheaders(handle, 'X-aws-ec2-metadata-token' = token)
+    if (!is.null(token)) {
+        curl::handle_setheaders(handle, 'X-aws-ec2-metadata-token' = token)
     }
     response <- try(
-        curl::curl_fetch_memory(uri,
-                                handle = handle),
+        curl::curl_fetch_memory(uri, handle = handle),
         silent = TRUE
     )
-    
+
     if (inherits(response, "try-error")) {
         return(NULL)
     } else {
         return(response)
     }
-
 }
 
 # for IMDSv2
 
 fetch_token <- function(base_url, version) {
-  timeout <- get_timeout()
-  handle <- curl::new_handle(timeout_ms=timeout)
-  curl::handle_setheaders(handle, "X-aws-ec2-metadata-token-ttl-seconds" = "21600")
-  curl::handle_setopt(handle, customrequest = 'PUT')
-  uri <- paste0(base_url, version, '/api/token');
-  response <- curl::curl_fetch_memory(uri, handle = handle)
-  rawToChar(response$content)
+    timeout <- get_timeout()
+    handle <- curl::new_handle(timeout_ms = timeout)
+    curl::handle_setheaders(
+        handle,
+        "X-aws-ec2-metadata-token-ttl-seconds" = "21600"
+    )
+    curl::handle_setopt(handle, customrequest = 'PUT')
+    uri <- paste0(base_url, version, '/api/token')
+    response <- curl::curl_fetch_memory(uri, handle = handle)
+    rawToChar(response$content)
 }
 
-get_instance_metadata <- function(item,
-                                  version = "latest",
-                                  base_url = "http://169.254.169.254/", 
-                                  parse = "text",
-                                  ...) {
-  
+get_instance_metadata <- function(
+    item,
+    version = "latest",
+    base_url = "http://169.254.169.254/",
+    parse = "text",
+    ...
+) {
     use_token <- Sys.getenv('USE_IMDS_TOKEN') == "TRUE"
     if (!missing(item)) {
         uri <- paste0(base_url, version, "/", item)
     } else {
         uri <- base_url
     }
-    if(use_token) {
-      token <- fetch_token(base_url, version)
-      response <- fetch(uri, token)
+    if (use_token) {
+        token <- fetch_token(base_url, version)
+        response <- fetch(uri, token)
     } else {
-      response <- fetch(uri)
+        response <- fetch(uri)
     }
     if (is.null(response)) {
         stop("Request failed", call. = FALSE)
@@ -78,11 +80,10 @@ get_instance_metadata <- function(item,
 #' @name aws.ec2metadata-package
 #' @title Get EC2 Instance Metadata
 #' @aliases aws.ec2metadata-package aws.ec2metadata
-#' @docType package
 #' @description Retrieve EC2 instance metadata from the instance
 #' @author Thomas J. Leeper <thosjleeper@gmail.com>
-#' @keywords package 
-NULL
+#' @keywords package
+"_PACKAGE"
 
 #' @rdname ec2metadata
 #' @export
@@ -99,43 +100,45 @@ is_ec2 <- function() {
 #' @importFrom jsonlite fromJSON
 #' @export
 instance_document <- function() {
-    jsonlite::fromJSON(get_instance_metadata(item = "dynamic/instance-identity/document"))
+    jsonlite::fromJSON(get_instance_metadata(
+        item = "dynamic/instance-identity/document"
+    ))
 }
 
 #' @rdname ec2metadata
 #' @details \code{is_ec2()} returns a logical for whether the current R session appears to be running in an EC2 instance. \code{is_ecs()} returns a logical for whether the current R session appears to be running in an ECS task container.
-#' 
+#'
 #' \code{instance_document} returns a list containing values from the \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html}{Instance Identity Document}, including the instance ID, AMI ID, region, availability zone, etc.
-#' 
+#'
 #' \code{metadata} is a list of functions to return various metadata values for the currently running EC2 instance. These are only meant to be called from an EC2 instance; no guarantees are made about behavior on other platforms. Two functions: \code{versions()} and \code{meta_data_items()} return the versions of the metadata, and the set of top-level metadata items, respectively.
-#' 
+#'
 #' The function \code{item()} retrieves a particular metadata item specified by its full path.
 #'
 #' The remaining functions in the list are aliases for potentially commonly needed metadata items.
-#' 
+#'
 #' The environment variable \code{AWS_METADATA_SERVICE_TIMEOUT} controls the timeout for instance metadata checks, and defaults to 1 second.
-#' 
+#'
 #' @return \code{is_ec2()} and \code{is_ecs()} return a logical. Generally, all other functions will return a character string containing the requested information, otherwise a \code{NULL} if the response is empty. The \code{iam_role()} and \code{ecs_metadata()} functions return a list. An error will occur if, for some reason, the request otherwise fails.
 #' @examples
 #' names(metadata)
-#' 
+#'
 #' \dontrun{
 #' if (is_ec2()) {
 #'   metadata$versions()
 #'   metadata$items()
-#' 
+#'
 #'   # get instance id
 #'   metadata$instance_id()
 #'   # get ami id
 #'   metadata$ami_id()
-#'   
+#'
 #'   # get IAM role (NULL if none specified)
 #'   metadata$iam_info()
 #'   metadata$iam_role("myrole")
-#' 
+#'
 #'   # get an arbitrary metadata item
 #'   metadata$item("meta-data/placement/availability-zone")
-#'   
+#'
 #'   # get region from instance identity document
 #'   instance_document()$region
 #' }
@@ -175,13 +178,21 @@ metadata <- list(
         get_instance_metadata(item = "meta-data/hostname", ...)
     },
     iam_info = function(...) {
-        info <- get_instance_metadata(item = "meta-data/iam/info", parse = "json", ...)
+        info <- get_instance_metadata(
+            item = "meta-data/iam/info",
+            parse = "json",
+            ...
+        )
     },
     iam_role_names = function(...) {
         get_instance_metadata(item = "meta-data/iam/security-credentials/", ...)
     },
     iam_role = function(role, ...) {
-        get_instance_metadata(item = paste0("meta-data/iam/security-credentials/", role), parse = "json", ...)
+        get_instance_metadata(
+            item = paste0("meta-data/iam/security-credentials/", role),
+            parse = "json",
+            ...
+        )
     },
     instance_action = function(...) {
         get_instance_metadata(item = "meta-data/instance-action", ...)
@@ -202,7 +213,10 @@ metadata <- list(
         get_instance_metadata(item = "meta-data/local-ipv4", ...)
     },
     availability_zone = function(...) {
-        get_instance_metadata(item = "meta-data/placement/availability-zone", ...)
+        get_instance_metadata(
+            item = "meta-data/placement/availability-zone",
+            ...
+        )
     },
     public_hostname = function(...) {
         get_instance_metadata(item = "meta-data/public-hostname", ...)
@@ -211,7 +225,10 @@ metadata <- list(
         get_instance_metadata(item = "meta-data/public-ipv4", ...)
     },
     public_key = function(key = 0, ...) {
-        get_instance_metadata(item = paste0("meta-data/public-keys/", key, "/openssh-key"), ...)
+        get_instance_metadata(
+            item = paste0("meta-data/public-keys/", key, "/openssh-key"),
+            ...
+        )
     },
     ramdisk_id = function(...) {
         get_instance_metadata(item = "meta-data/ramdisk-id", ...)
@@ -231,7 +248,6 @@ metadata <- list(
     ecs_task_role = function(...) {
         ecs_metadata(...)
     }
-
 )
 
 ENV_CONTAINER_CREDS <- "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"
@@ -249,9 +265,9 @@ is_ecs <- function() {
 ecs_metadata <- function(base_url = "http://169.254.170.2") {
     container_relative <- Sys.getenv(ENV_CONTAINER_CREDS)
     uri <- paste0(base_url, container_relative)
-    
+
     response <- fetch(uri)
-    
+
     if (is.null(response)) {
         out <- NULL
     } else {

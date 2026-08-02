@@ -10,9 +10,6 @@
 \alias{is_ecs}
 \alias{ecs_metadata}
 \title{Get EC2 Instance Metadata}
-\format{
-An object of class \code{list} of length 26.
-}
 \usage{
 is_ec2()
 
@@ -58,14 +55,14 @@ if (is_ec2()) {
   metadata$instance_id()
   # get ami id
   metadata$ami_id()
-  
+
   # get IAM role (NULL if none specified)
   metadata$iam_info()
   metadata$iam_role("myrole")
 
   # get an arbitrary metadata item
   metadata$item("meta-data/placement/availability-zone")
-  
+
   # get region from instance identity document
   instance_document()$region
 }
@@ -82,8 +79,15 @@ if (is_ecs()) {
 \references{
 \href{http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html}{Metadata Documentation}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/cloudyr/aws.ec2metadata}
+  \item Report bugs at \url{https://github.com/cloudyr/aws.ec2metadata/issues}
+}
+
+}
 \author{
 Thomas J. Leeper <thosjleeper@gmail.com>
 }
-\keyword{datasets}
 \keyword{package}
