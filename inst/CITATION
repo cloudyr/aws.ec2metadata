@@ -1,18 +1,23 @@
 citHeader("To cite package 'aws.ec2metadata' in publications use:")
-     
- year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
- vers <- paste("R package version", meta$Version)
- 
- citEntry(entry="Manual",
-		  title = "aws.ec2metadata: An R Package",
-		  author = c(
-            person("Thomas J.", "Leeper"),
-            person("Gonzalo", "Diaz")
-      )
-		  year = year,
-		  note = vers,
-		  textVersion =
-		  paste("Thomas J. Leeper (",
-				year,
-				"). aws.ec2metadata: An R Packge. ",
-				vers, ".", sep=""))
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version", meta$Version)
+
+citEntry(
+	entry = "Manual",
+	title = "aws.ec2metadata: An R Package",
+	author = c(
+		person("Thomas J.", "Leeper"),
+		person("Gonzalo", "Diaz")
+	),
+	year = year,
+	note = vers,
+	textVersion = paste(
+		"Thomas J. Leeper (",
+		year,
+		"). aws.ec2metadata: An R Packge. ",
+		vers,
+		".",
+		sep = ""
+	)
+)
